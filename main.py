@@ -21,6 +21,7 @@ def main():
         
         board.draw_squares(WIN)       
         pygame.display.update()
+        test
     
     pygame.quit()
 
