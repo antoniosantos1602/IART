@@ -1,31 +1,46 @@
 import pygame
-from puzzle.constants import WIDTH, HEIGHT
-from puzzle.board import Board
+import random
+import time 
+from puzzle.constants import *
 
+class Game: 
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption('SYMETRY PUZZLE')
+        self.clock = pygame.time.Clock()
 
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('SYMMETRY PUZZLES')
+    def new(self):
+        pass
 
-def main():
-    run = True
-    board = Board()
-
-    while run:
-
+    def run(self):
+        self.playing = True
+        while self.playing:
+            self.clock.tick(FPS)
+            self.events()
+            self.update()
+            self.draw()
+    def update(self):
+        pass
+    def draw_grid(self):
+        for row in range(-1,SQUARE_SIZE * TILESIZE, TILESIZE):
+            pygame.draw.line(self.screen,BLACK,(row,0),(row,SQUARE_SIZE * TILESIZE))
+        for col in range(-1,SQUARE_SIZE * TILESIZE, TILESIZE):
+                        pygame.draw.line(self.screen,GREY,(0,col),(SQUARE_SIZE * TILESIZE,col))
+    def draw(self):
+        self.screen.fill(WHITE)
+        self.draw_grid()
+        pygame.display.flip()
+    def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
-        
-        board.draw_squares(WIN)       
-        pygame.display.update()
-        test
-    
-    pygame.quit()
+                pygame.quit()
+                quit(0)
 
-main()
+game = Game() #instance of the game
+while True:
+    game.new() #new game
+    game.run() #run game
 
 
 
@@ -36,35 +51,3 @@ main()
 
 
 
-
-
-
-"""
-pygame.init()
-
-screen = pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption('Symmetry Puzzles')
-
-
-def main():
-
-    run = True
-
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-
-        # preenchendo a tela com a cor branca
-        screen.fill(BLACK)
-
-        # construindo o tabuleiro
-        build_board(screen)
-
-        pygame.display.update()
-
-    pygame.quit()
-
-main()
-
-"""
