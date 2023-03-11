@@ -1,6 +1,6 @@
 import pygame
 
-WIDTH, HEIGHT = 1100, 641
+WIDTH, HEIGHT = 640, 640
 FPS = 60
 TILESIZE = 128
 SQUARE_SIZE = 5 #so mudar este valor
@@ -9,7 +9,10 @@ SQUARE_SIZE = 5 #so mudar este valor
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-GREY = (100,100,100)
+GREY = (100, 100, 100)
+RED = (255, 0 , 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
 
 
