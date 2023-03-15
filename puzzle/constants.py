@@ -1,6 +1,6 @@
 import pygame
 
-WIDTH, HEIGHT = 640, 640
+WIDTH, HEIGHT = 641, 641
 FPS = 60
 TILESIZE = 128
 SQUARE_SIZE = 5 #so mudar este valor
