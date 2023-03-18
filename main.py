@@ -1,20 +1,11 @@
 import pygame
 import random
-import time 
 from puzzle.constants import *
-import os
 
 class Game: 
     def __init__(self):
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.init()
-    
-        pygame.display.set_caption('SYMMETRY PUZZLE')
         self.clock = pygame.time.Clock()
-
-       # for i in range(SQUARE_SIZE):
-        #    for j in range(SQUARE_SIZE):
-         #        self.grid[i][j] = random.randint(0,3)
 
     def new(self, filename):
         with open(filename) as f:
@@ -23,6 +14,8 @@ class Game:
                 row = [int(x) for x in line.split()]
                 if row:
                     self.grid.append(row)
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption('SYMMETRY PUZZLE')
 
     def run(self):
         self.playing = True
@@ -70,20 +63,15 @@ class Game:
     
 
 game = Game() #instance of the game
-game.new('displays/2.txt')
 
-print(game.grid)
+filename = input("what puzzle do you want? ")
 
-
-while True:
-    game.run() #run game
-
-
-
-
-
-
-
-
-
-
+if filename.isdigit() and int(filename) in range(1, 21):
+    # If the filename is valid, load the corresponding file
+    game.new(f'displays/{filename}.txt')
+    game.run()
+else:
+    # If the filename is invalid, print an error message and exit the program
+    print("Invalid filename")
+    pygame.quit()
+    quit(0)
