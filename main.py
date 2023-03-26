@@ -1,5 +1,6 @@
 import pygame
 import random
+from bfs import *
 from puzzle.constants import *
 
 class Game: 
@@ -69,9 +70,32 @@ filename = input("what puzzle do you want? ")
 if filename.isdigit() and int(filename) in range(1, 21):
     # If the filename is valid, load the corresponding file
     game.new(f'displays/{filename}.txt')
+    print(game.grid)
     game.run()
 else:
     # If the filename is invalid, print an error message and exit the program
     print("Invalid filename")
     pygame.quit()
     quit(0)
+
+# Solve the puzzle using BFS
+actions = solve_puzzle(initial_tate)
+if actions is None:
+    print("No solution found.")
+else:
+    print(f"Solution found in {len(actions)} steps.")
+    print(actions)
+
+# Play the solved puzzle
+game = Game()
+
+game.run()
+
+for action in actions:
+    i, j, shape = action
+    game.grid[i][j] = shape
+    game.draw()
+    pygame.time.delay(500) # Delay for half a second
+
+
+
