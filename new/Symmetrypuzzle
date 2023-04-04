@@ -194,16 +194,34 @@ def dfs(problem):
                     stack.append(child)
         return None
 
-def a_star_search(problem,heuristic):
-    return greedy_search(problem,lambda state: len(state.move_history) + heuristic(state))
+def a_star_search(problem, heuristic):
+    setattr(Symmetry_puzzle, "__lt__", lambda self, other: heuristic(self) + len(self.move_history) < heuristic(other) + len(other.move_history))
+    states = [problem]
+    visited = set()
+
+    while states:
+        node = heapq.heappop(states)
+        visited.add(node)
+
+        if node.objective_state():
+            return node.move_history
+
+        for child in node.children():
+            if child not in visited:
+                print(child.board)
+                heapq.heappush(states, child)
+        heapq.heapify(states)
+        
+
+    return None
 
              
 
-problem = Symmetry_puzzle([[0,0,0,0,0],
-                           [1,2,0,2,0],
-                           [0,2,3,0,1],
-                           [2,0,3,1,0],
-                           [0,0,0,2,0]])
+problem = Symmetry_puzzle([[0,0,0,3,2],
+                           [0,0,0,2,0],
+                           [1,1,1,0,1],
+                           [0,3,3,0,1],
+                           [0,0,2,0,0]])
 
 """
 problem = Symmetry_puzzle([[2,0,0],
