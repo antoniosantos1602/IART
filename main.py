@@ -1,20 +1,21 @@
 import pygame
-import random
-from bfs import *
 from puzzle.constants import *
 
-class Game: 
+class Game:
     def __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
 
+
     def new(self, filename):
         with open(filename) as f:
             self.grid = []
+            self.original_grid = [] 
             for line in f:
                 row = [int(x) for x in line.split()]
                 if row:
                     self.grid.append(row)
+                    self.original_grid.append(row.copy()) 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('SYMMETRY PUZZLE')
 
@@ -30,10 +31,11 @@ class Game:
         pass
     
     def draw_grid(self):
-        for row in range(0,SQUARE_SIZE * TILESIZE+1, TILESIZE):
-            pygame.draw.line(self.screen,BLACK,(row,0),(row,SQUARE_SIZE * TILESIZE))
-        for col in range(0,SQUARE_SIZE * TILESIZE+1, TILESIZE):
-                        pygame.draw.line(self.screen,GREY,(0,col),(SQUARE_SIZE * TILESIZE,col))
+        for row in range(0, SQUARE_SIZE * TILESIZE + 1, TILESIZE):
+            pygame.draw.line(self.screen, BLACK, (row, 0), (row, SQUARE_SIZE * TILESIZE))
+        for col in range(0, SQUARE_SIZE * TILESIZE + 1, TILESIZE):
+            pygame.draw.line(self.screen, GREY, (0, col), (SQUARE_SIZE * TILESIZE, col))
+
     def draw(self):
         self.screen.fill(WHITE)
         self.draw_grid()
@@ -52,50 +54,41 @@ class Game:
                 elif shape == 3:
                     pygame.draw.polygon(self.screen, BLUE, [(x - TILESIZE // 2 + 2, y + TILESIZE // 2 - 2), (x + TILESIZE // 2 - 2, y + TILESIZE // 2 - 2), (x, y - TILESIZE // 2 + 2)])
 
-
         pygame.display.flip()
-    
-    
+
     def events(self):
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit(0)
-    
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                row, col = y // TILESIZE, x // TILESIZE
+                print(self.grid[row][col])
+                if self.original_grid[row][col] == 0:
+                        if self.grid[row][col] == 0:
+                            self.grid[row][col] = 1
+                        elif self.grid[row][col] == 1:
+                            self.grid[row][col] = 2
+                        elif self.grid[row][col] == 2:
+                            self.grid[row][col] = 3
+                        elif self.grid[row][col] == 3:
+                            self.grid[row][col] = 0
+                        else:
+                            pass
 
-game = Game() #instance of the game
+game = Game()
 
 filename = input("what puzzle do you want? ")
 
 if filename.isdigit() and int(filename) in range(1, 21):
-    # If the filename is valid, load the corresponding file
     game.new(f'displays/{filename}.txt')
     print(game.grid)
     game.run()
 else:
-    # If the filename is invalid, print an error message and exit the program
     print("Invalid filename")
     pygame.quit()
     quit(0)
 
-# Solve the puzzle using BFS
-actions = solve_puzzle(initial_tate)
-if actions is None:
-    print("No solution found.")
-else:
-    print(f"Solution found in {len(actions)} steps.")
-    print(actions)
-
-# Play the solved puzzle
-game = Game()
-
 game.run()
-
-for action in actions:
-    i, j, shape = action
-    game.grid[i][j] = shape
-    game.draw()
-    pygame.time.delay(500) # Delay for half a second
-
-
-
