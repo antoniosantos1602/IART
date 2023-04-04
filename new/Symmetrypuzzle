@@ -93,14 +93,14 @@ def h1(state):
     non_palindromic_rows = 0
     for row in state.board:
         row_trimmed = [c for c in row if c != 0]
-        if row_trimmed != row_trimmed[::-1]:
+        if len(row_trimmed) > 1 and row_trimmed != row_trimmed[::-1]:
             non_palindromic_rows += 1
     # count non-palindromic columns
     non_palindromic_cols = 0
     for j in range(len(state.board[0])):
         col = [state.board[i][j] for i in range(len(state.board))]
         col_trimmed = [c for c in col if c != 0]
-        if col_trimmed != col_trimmed[::-1]:
+        if len(col_trimmed) > 1 and col_trimmed != col_trimmed[::-1]:
             non_palindromic_cols += 1
     # return the sum of non-palindromic rows and columns
     return (non_palindromic_rows + non_palindromic_cols)/2
@@ -109,6 +109,7 @@ def greedy_search(problem, heuristic):
     setattr(Symmetry_puzzle,"__lt__", lambda self, other: heuristic(self) < heuristic(other))
     states = [problem]
     visited = set()
+   
 
     while states:
         node = heapq.heappop(states)
@@ -118,9 +119,11 @@ def greedy_search(problem, heuristic):
             return node.move_history
         
         for child in node.children():
+            
             if child not in visited:
                 print(child.board)
-                heapq.heappush(states,child)  
+                heapq.heappush(states,child)
+        heapq.heapify(states)  
     return None
 
 def print_sequence(sequence):
@@ -196,11 +199,11 @@ def a_star_search(problem,heuristic):
 
              
 
-problem = Symmetry_puzzle([[0,0,0,3,2],
-                           [0,0,0,2,0],
-                           [1,1,1,0,1],
-                           [0,3,3,0,1],
-                           [0,0,2,0,0]])
+problem = Symmetry_puzzle([[0,0,0,0,0],
+                           [1,2,0,2,0],
+                           [0,2,3,0,1],
+                           [2,0,3,1,0],
+                           [0,0,0,2,0]])
 
 """
 problem = Symmetry_puzzle([[2,0,0],
