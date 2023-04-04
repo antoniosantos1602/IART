@@ -88,6 +88,23 @@ class Symmetry_puzzle:
             # compares the two matrices
          #  return [item for sublist in self.board for item in sublist] == [item for sublist in other.board for item in sublist]
 
+def h1(state):
+    # count non-palindromic rows
+    non_palindromic_rows = 0
+    for row in state:
+        row_trimmed = [c for c in row if c != 0]
+        if row_trimmed != row_trimmed[::-1]:
+            non_palindromic_rows += 1
+    # count non-palindromic columns
+    non_palindromic_cols = 0
+    for j in range(len(state[0])):
+        col = [state[i][j] for i in range(len(state))]
+        col_trimmed = [c for c in col if c != 0]
+        if col_trimmed != col_trimmed[::-1]:
+            non_palindromic_cols += 1
+    # return the sum of non-palindromic rows and columns
+    return non_palindromic_rows + non_palindromic_cols
+
 def greedy_search(problem, heuristic):
     setattr(Symmetry_puzzle,"__lt__", lambda self, other: heuristic(self) < heuristic(other))
     states = [problem]
@@ -105,20 +122,6 @@ def greedy_search(problem, heuristic):
                 print(child.board)
                 heapq.heappush(states,child)  
     return None
-
-def h1(state):
-    # heuristic function 1
-    # returns the number of incorrect placed pieces in the matrix
-    total = 0
-    board = state.board
-    rows = len(board)
-    cols = len(board[0])
-    for i in range(rows):
-        for j in range(cols):
-            if(board[i][j] != i * rows + j + 1 and board[i][j] != 0):
-                total += 1
-
-    return total
 
 def print_sequence(sequence):
         if sequence is None:
@@ -155,8 +158,8 @@ def bfs(problem):
         # problem(NPuzzleState) - the initial state
         queue = deque([problem]) # can also also use array and pop(0)
         visited = set() # to not visit the same state twice
-        count = 0
-        while queue and count < 200:
+    
+        while queue:
             
             node = queue.popleft();
             
@@ -187,20 +190,23 @@ def dfs(problem):
                     stack.append(child)
         return None
 
-             
+def a_star_search(problem,heuristic):
+    return greedy_search(problem,lambda state: len(state.move_history) + heuristic(state))
 
+             
+"""
 problem = Symmetry_puzzle([[0,0,0,1,0],
                            [1,1,0,0,0],
                            [0,0,0,0,3],
                            [2,3,1,0,0],
                            [0,0,2,0,0]])
-
 """
+
 problem = Symmetry_puzzle([[2,0,0],
                            [0,1,3],
                            [0,2,2]])
 
-"""
+
 print_sequence(greedy_search(problem,h1))
 
 
