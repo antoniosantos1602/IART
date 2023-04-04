@@ -1,5 +1,5 @@
 import pygame
-from puzzle.constants import *
+from new.constants import *
 
 class Game:
     def __init__(self):
@@ -67,16 +67,18 @@ class Game:
                 row, col = y // TILESIZE, x // TILESIZE
                 print(self.grid[row][col])
                 if self.original_grid[row][col] == 0:
-                        if self.grid[row][col] == 0:
-                            self.grid[row][col] = 1
-                        elif self.grid[row][col] == 1:
-                            self.grid[row][col] = 2
-                        elif self.grid[row][col] == 2:
-                            self.grid[row][col] = 3
-                        elif self.grid[row][col] == 3:
-                            self.grid[row][col] = 0
+                        if self.board[row][col] == 0:
+                            self.board[row][col] = 1
+                        elif self.board[row][col] == 1:
+                            self.board[row][col] = 2
+                        elif self.board[row][col] == 2:
+                            self.board[row][col] = 3
+                        elif self.board[row][col] == 3:
+                            self.board[row][col] = 0
                         else:
                             pass
+
+
 
 game = Game()
 
